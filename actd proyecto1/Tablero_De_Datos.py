@@ -1,69 +1,84 @@
-import pandas as pd
-import statsmodels.api as sm
-from sklearn.model_selection import train_test_split
 import dash
 from dash import html, dcc, Input, Output
+import pandas as pd
+import statsmodels.api as sm
 
-# Load datasets for sewing and finishing departments
-sewing_data = pd.read_csv('datosproyecto1', index_col=0)
-finishing_data = pd.read_csv('finishing_datos', index_col=0)
+# Load datasets
+sewing_data = pd.read_csv("datosproyecto1")
+finishing_data = pd.read_csv("finishing_datos")
 
-# Define features and target variable
-features = ['team', 'targeted_productivity', 'smv', 'wip', 'over_time', 'incentive', 'idle_time', 'idle_men', 'no_of_style_change', 'no_of_workers', 'quarter_cat', 'day_Monday', 'day_Saturday', 'day_Sunday', 'day_Thursday', 'day_Tuesday']
-target = 'actual_productivity'
-
-# Initialize the Dash app
+# Create Dash app
 app = dash.Dash(__name__)
 
-# Define the layout of the Dash app
+# Define Universidad de Los Andes logo
+logo_url = "http://www.acofi.edu.co/eiei2018/wp-content/uploads/2017/08/logo-universidad-de-los-andes-web.png"
+
+
+# Define app layout with CSS styling
 app.layout = html.Div([
-    html.H1("Productivity Dashboard"),
-    html.Label("Select Department:"),
+    html.Img(src=logo_url, style={'width': '200px', 'margin': 'auto'}),
+    html.H1("Productivity Dashboard", style={'textAlign': 'center'}),
+    html.Label("Select Department:", style={'textAlign': 'center'}),
     dcc.Dropdown(
         id='department-dropdown',
         options=[
-            {'label': 'Sewing', 'value': 'sewing'},
-            {'label': 'Finishing', 'value': 'finishing'}
+            {'label': 'Sewing Department', 'value': 'sewing'},
+            {'label': 'Finishing Department', 'value': 'finishing'}
         ],
-        value='sewing'
+        value='sewing',
+        style={'width': '50%', 'margin': 'auto'}
     ),
-    html.Label("Select Quarter:"),
-    dcc.Dropdown(
-        id='quarter-dropdown',
-        options=[
-            {'label': 'Quarter 1', 'value': 1},
-            {'label': 'Quarter 2', 'value': 2}
-        ],
-        value=1
-    ),
-    html.Label("Enter x-values:"),
-    *[dcc.Input(id=f'{feature}-input', type='number', placeholder=feature) for feature in features],
-    html.Button('Calculate', id='calculate-button'),
-    html.Div(id='output-container')
+    html.Label("Enter X Values:", style={'textAlign': 'center'}),
+    html.Div(id='x-values-input', style={'width': '50%', 'margin': 'auto'}),
+    html.Button('Submit', id='submit-val', n_clicks=0, style={'margin': '20px auto', 'display': 'block'}),
+    html.Div(id='output-container-button', style={'textAlign': 'center', 'fontSize': '20px'})
 ])
 
-# Define callback to update output based on user input
+# Define callback to update X values input based on department selection
 @app.callback(
-    Output('output-container', 'children'),
-    [Input('calculate-button', 'n_clicks')],
-    [Input(f'{feature}-input', 'value') for feature in features],
+    Output('x-values-input', 'children'),
+    Input('department-dropdown', 'value'))
+def update_x_values_input(department):
+    if department == 'sewing':
+        x_vars = ['over_time', 'incentive', 'quarter_cat', 'wip']
+    elif department == 'finishing':
+        x_vars = ['team', 'targeted_productivity', 'smv', 'over_time', 'incentive', 'idle_time', 'no_of_workers', 'quarter_cat']
+    inputs = [dcc.Input(id=f"x-{var}", type='number', placeholder=var, style={'margin': '5px'}) for var in x_vars]
+    return inputs
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.model_selection import train_test_split
+
+# Define callback to perform linear regression and display result
+@app.callback(
+    Output('output-container-button', 'children'),
+    Input('submit-val', 'n_clicks'),
     Input('department-dropdown', 'value'),
-    Input('quarter-dropdown', 'value')
-)
-def update_output(n_clicks, *values):
-    if n_clicks:
-        department = values[-2]
-        quarter = values[-1]
-        data = sewing_data if department == 'sewing' else finishing_data
-        X = data[features]
-        y = data[target]
-        X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=1)
-        X_train = sm.add_constant(X_train)
+    Input('x-values-input', 'children'))
+def update_output(n_clicks, department, x_values_inputs):
+    if n_clicks > 0:
+        if department == 'sewing':
+            x_vars = ['over_time', 'incentive', 'quarter_cat', 'wip']
+            data = sewing_data
+        elif department == 'finishing':
+            x_vars = ['team', 'targeted_productivity', 'smv', 'over_time', 'incentive', 'idle_time', 'no_of_workers', 'quarter_cat']
+            data = finishing_data
+        x_values = [float(input_elem['props']['value']) for input_elem in x_values_inputs if input_elem['props']['id'].startswith('x-')]
+        
+        X = sm.add_constant(data[x_vars])
+        y = data['actual_productivity']
+        
+        scaler = MinMaxScaler()
+        X_scaled = scaler.fit_transform(X)
+        y_scaled = scaler.fit_transform(y.values.reshape(-1, 1)).flatten()
+        
+        X_train, X_test, y_train, y_test = train_test_split(X_scaled, y_scaled, test_size=0.2, random_state=42)
+        
         model = sm.OLS(y_train, X_train).fit()
-        X_pred = sm.add_constant([values[:-2]])
-        y_pred = model.predict(X_pred)
-        return f"Predicted productivity: {y_pred[0]}"
+        predicted_y_scaled = model.predict([1] + x_values)
+        predicted_y = scaler.inverse_transform(predicted_y_scaled.reshape(-1, 1)).flatten()[0]
+        return f"Predicted Y value: {predicted_y}"
 
-
+# Run the app
 if __name__ == '__main__':
     app.run_server(debug=True)
+
