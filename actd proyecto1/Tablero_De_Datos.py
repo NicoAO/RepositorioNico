@@ -4,7 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn import linear_model
 from mpl_toolkits.mplot3d import Axes3D
-data = pd.read_csv('datosproyecto1', index_col=0)
+data = pd.read_csv("datosproyecto1", index_col=0)
 titulos= list(data.columns[:-1])
 titulos.remove("date")
 titulos.remove("quarter")
