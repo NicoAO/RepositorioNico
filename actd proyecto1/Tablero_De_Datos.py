@@ -18,19 +18,18 @@ y = data.actual_productivity
 X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=1)
 X_train = sm.add_constant(X_train)
 model = sm.OLS(y_train, X_train).fit()
-import numpy as np
-xx_pred, yy_pred = np.meshgrid(X_test, y_test)
-model_viz = np.array([xx_pred.flatten(), yy_pred.flatten()]).T
-predicted = model.predict(model_viz)
+
+
 
 ejex = data[['incentive', 'over_time']].values.reshape(-1,2)
 ejey = data['actual_productivity']
-
-
 xx = ejex[:, 0]
 yy = ejex[:, 1]
 zz = ejey
-
+import numpy as np
+xx_pred, yy_pred = np.meshgrid(xx, yy)
+model_viz = np.array([xx_pred.flatten(), yy_pred.flatten()]).T
+predicted = model.predict(sm.add_constant(model_viz))
 r2 = 1
 
 
