@@ -18,7 +18,7 @@ logo_url = "https://images.ctfassets.net/wp1lcwdav1p1/32ZvbT2qtVDItdoxBhRHRf/ee5
 app.layout = html.Div([
     html.Img(src=logo_url, style={'width': '300px', 'margin': 'auto'}),
     html.H1("Dashboard para el departamento de Producción", style={'textAlign': 'center',"fontFamily":"Courier New"}),
-    html.Label("Seleccione el departamento a evaluar:", style={'textAlign': 'center'}),
+    html.Label("Seleccione el departamento a evaluar:", style={'textAlign': 'center', 'fontWeight': 'bold', "fontFamily":"Courier New"}),
     dcc.Dropdown(
         id='department-dropdown',
         options=[
@@ -28,7 +28,7 @@ app.layout = html.Div([
         value='sewing',
         style={'width': '50%', 'margin': 'auto'}
     ),
-    html.Label("Ingrese los valores:", style={'textAlign': 'center',"fontFamily":"Courier New"}),
+    html.Label("Ingrese los valores:", style={'textAlign': 'center', 'fontWeight': 'bold', "fontFamily":"Courier New"}),
     html.Div(id='x-values-input', style={'width': '50%', 'margin': 'auto'}),
     html.Button('Submit', id='submit-val', n_clicks=0, style={'margin': '20px auto', 'display': 'block'}),
     html.Div(id='output-container-button', style={'textAlign': 'center', 'fontSize': '20px'}),
@@ -83,7 +83,7 @@ def update_output(n_clicks, department, x_values_inputs):
         
         model = sm.OLS(y_train, X_train).fit()
         predicted_y = model.predict([1] + x_values)
-        return f"Predicted Y value: {predicted_y[0]}"
+        return f"Productividad estimada: {predicted_y[0]}"
 print("GOING LIVE")
 # Run the app
 if __name__ == '__main__':
