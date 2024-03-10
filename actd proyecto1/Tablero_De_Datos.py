@@ -3,7 +3,7 @@ from dash import html, dcc, Input, Output
 import pandas as pd
 import statsmodels.api as sm
 
-# Load datasets
+#Bases de datos 
 sewing_data = pd.read_csv("datosproyecto1")
 finishing_data = pd.read_csv("finishing_datos")
 
@@ -11,15 +11,15 @@ finishing_data = pd.read_csv("finishing_datos")
 app = dash.Dash(__name__)
 
 # Define Universidad de Los Andes logo
-logo_url = "http://www.acofi.edu.co/eiei2018/wp-content/uploads/2017/08/logo-universidad-de-los-andes-web.png"
+logo_url = "https://images.ctfassets.net/wp1lcwdav1p1/32ZvbT2qtVDItdoxBhRHRf/ee5581294ae18385bf17cbccdcd74a79/LOGOS_Ingenieri__a_Uniandes_2018-_Color.png?q=60"
 
 
 # Define app layout with CSS styling
 # Update the app layout with background image as a watermark
 app.layout = html.Div([
-    html.Img(src=logo_url, style={'width': '200px', 'margin': 'auto'}),
-    html.H1("Productivity Dashboard", style={'textAlign': 'center'}),
-    html.Label("Select Department:", style={'textAlign': 'center'}),
+    html.Img(src=logo_url, style={'width': '300px', 'margin': 'auto'}),
+    html.H1("Dashboard para el departamento de Producción", style={'textAlign': 'center'}),
+    html.Label("Seleccione el departamento a evaluar:", style={'textAlign': 'center'}),
     dcc.Dropdown(
         id='department-dropdown',
         options=[
@@ -29,7 +29,7 @@ app.layout = html.Div([
         value='sewing',
         style={'width': '50%', 'margin': 'auto'}
     ),
-    html.Label("Enter X Values:", style={'textAlign': 'center'}),
+    html.Label("Ingrese los valores:", style={'textAlign': 'center'}),
     html.Div(id='x-values-input', style={'width': '50%', 'margin': 'auto'}),
     html.Button('Submit', id='submit-val', n_clicks=0, style={'margin': '20px auto', 'display': 'block'}),
     html.Div(id='output-container-button', style={'textAlign': 'center', 'fontSize': '20px'}),
@@ -86,7 +86,7 @@ def update_output(n_clicks, department, x_values_inputs):
         model = sm.OLS(y_train, X_train).fit()
         predicted_y_scaled = model.predict([1] + x_values)
         predicted_y = scaler.inverse_transform(predicted_y_scaled.reshape(-1, 1)).flatten()[0]
-        return f"Predicted Y value: {predicted_y}"
+        return f"La productividad real estimada es : {predicted_y}"
 print("GOING LIVE")
 # Run the app
 if __name__ == '__main__':
