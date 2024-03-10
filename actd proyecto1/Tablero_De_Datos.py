@@ -15,6 +15,7 @@ logo_url = "http://www.acofi.edu.co/eiei2018/wp-content/uploads/2017/08/logo-uni
 
 
 # Define app layout with CSS styling
+# Update the app layout with background image as a watermark
 app.layout = html.Div([
     html.Img(src=logo_url, style={'width': '200px', 'margin': 'auto'}),
     html.H1("Productivity Dashboard", style={'textAlign': 'center'}),
@@ -31,8 +32,17 @@ app.layout = html.Div([
     html.Label("Enter X Values:", style={'textAlign': 'center'}),
     html.Div(id='x-values-input', style={'width': '50%', 'margin': 'auto'}),
     html.Button('Submit', id='submit-val', n_clicks=0, style={'margin': '20px auto', 'display': 'block'}),
-    html.Div(id='output-container-button', style={'textAlign': 'center', 'fontSize': '20px'})
+    html.Div(id='output-container-button', style={'textAlign': 'center', 'fontSize': '20px'}),
+
+    # Add background image as a watermark
+    html.Div([
+        html.Div(style={'position': 'absolute', 'top': '0', 'left': '0', 'width': '100%', 'height': '100%',
+                        'background-image': 'url("https://img.freepik.com/premium-photo/computer-aided-manufacturing-hd-wallpaper-photographic-image_993236-3155.jpg")',
+                        'opacity': '0.4', 'z-index': '-1'}),
+        html.Div(style={'position': 'relative', 'z-index': '0'})  # This is needed to keep the content on top
+    ])
 ])
+
 
 # Define callback to update X values input based on department selection
 @app.callback(
@@ -77,7 +87,7 @@ def update_output(n_clicks, department, x_values_inputs):
         predicted_y_scaled = model.predict([1] + x_values)
         predicted_y = scaler.inverse_transform(predicted_y_scaled.reshape(-1, 1)).flatten()[0]
         return f"Predicted Y value: {predicted_y}"
-
+print("GOING LIVE")
 # Run the app
 if __name__ == '__main__':
     app.run_server(debug=True)
