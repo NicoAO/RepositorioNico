@@ -29,7 +29,7 @@ app.layout = html.Div([
     ),
     html.Label("Ingrese los valores:", style={'textAlign': 'center', 'fontWeight': 'bold', "fontFamily":"Courier New"}),
     html.Div(id='x-values-input', style={'width': '50%', 'margin': 'auto'}),
-    html.Button('Submit', id='submit-val', n_clicks=0, style={'margin': '20px auto', 'display': 'block'}),
+    html.Button('Calcular', id='submit-val', n_clicks=0, style={'margin': '20px auto', 'display': 'block'}),
     html.Div(id='output-container-button', style={'textAlign': 'center', 'fontSize': '20px'}),
 
     # Foto background watermark
