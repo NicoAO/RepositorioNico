@@ -49,9 +49,9 @@ app.layout = html.Div([
     Input('department-dropdown', 'value'))
 def update_x_values_input(department):
     if department == 'sewing':
-        x_vars = ['over_time', 'incentive', 'quarter_cat', 'wip']
+        x_vars = ['team','targeted_productivity','smv','over_time','incentive','idle_time','idle_men','no_of_workers','day_Sunday','day_Saturday',"day_Monday",'day_Tuesday','day_Wednesday','day_Thursday']
     elif department == 'finishing':
-        x_vars = ['team', 'targeted_productivity', 'smv', 'over_time', 'incentive', 'idle_time', 'no_of_workers', 'quarter_cat']
+        x_vars = ['smv', 'over_time', 'no_of_workers']
     inputs = [dcc.Input(id=f"x-{var}", type='number', placeholder=var, style={'margin': '5px'}) for var in x_vars]
     return inputs
 #----------------------------------------------------
@@ -67,10 +67,10 @@ from sklearn.model_selection import train_test_split
 def update_output(n_clicks, department, x_values_inputs):
     if n_clicks > 0:
         if department == 'sewing':
-            x_vars = ['over_time', 'incentive', 'quarter_cat', 'wip']
+            x_vars = ['team','targeted_productivity','smv','over_time','incentive','idle_time','idle_men','no_of_workers','day_Sunday','day_Saturday',"day_Monday",'day_Tuesday','day_Wednesday','day_Thursday']
             data = sewing_data
         elif department == 'finishing':
-            x_vars = ['team', 'targeted_productivity', 'smv', 'over_time', 'incentive', 'idle_time', 'no_of_workers', 'quarter_cat']
+            x_vars = ['smv', 'over_time', 'no_of_workers']
             data = finishing_data
         x_values = [float(input_elem['props']['value']) for input_elem in x_values_inputs if input_elem['props']['id'].startswith('x-')]
         
