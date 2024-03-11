@@ -13,8 +13,7 @@ app = dash.Dash(__name__)
 # Logo de la Universidad de Los Andes :)
 logo_url = "https://images.ctfassets.net/wp1lcwdav1p1/32ZvbT2qtVDItdoxBhRHRf/ee5581294ae18385bf17cbccdcd74a79/LOGOS_Ingenieri__a_Uniandes_2018-_Color.png?q=60"
 
-
-# definir el app layout con CSS styling!
+# definir el app layout con CSS styling (style = {})
 app.layout = html.Div([
     html.Img(src=logo_url, style={'width': '300px', 'margin': 'auto'}),
     html.H1("Dashboard para el departamento de Producción", style={'textAlign': 'center',"fontFamily":"Courier New"}),
@@ -33,7 +32,7 @@ app.layout = html.Div([
     html.Button('Submit', id='submit-val', n_clicks=0, style={'margin': '20px auto', 'display': 'block'}),
     html.Div(id='output-container-button', style={'textAlign': 'center', 'fontSize': '20px'}),
 
-    # Acá se incluye --> background watermark
+    # Foto background watermark
     html.Div([
         html.Div(style={'position': 'absolute', 'top': '0', 'left': '0', 'width': '100%', 'height': '100%',
                         'background-image': 'url("https://img.freepik.com/premium-photo/computer-aided-manufacturing-hd-wallpaper-photographic-image_993236-3155.jpg")',
@@ -75,7 +74,7 @@ def update_output(n_clicks, department, x_values_inputs):
         x_values = [float(input_elem['props']['value']) for input_elem in x_values_inputs if input_elem['props']['id'].startswith('x-')]
         
         #------------------------------------------------------------------------------------
-        #Incluir la part de Ciencia de Datos -- Parte: Usando StatsModels
+        #Incluir la parte de Ciencia de Datos -- Parte: Usando StatsModels
         X = sm.add_constant(data[x_vars])
         y = data['actual_productivity']
         
