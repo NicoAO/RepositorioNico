@@ -131,6 +131,6 @@ def update_3d_plot(department):
 print("GOING LIVE")
 # Run the app
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server(host="0.0.0.0", debug=True)
 
 
