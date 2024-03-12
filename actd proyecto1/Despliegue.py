@@ -4,8 +4,8 @@ import pandas as pd
 import statsmodels.api as sm
 
 #Bases de datos 
-sewing_data = pd.read_csv("datosproyecto1")
-finishing_data = pd.read_csv("finishing_datos")
+sewing_data = pd.read_csv("datosproyecto1.txt")
+finishing_data = pd.read_csv("finishing_datos.txt")
 
 #Crear la Dash app
 app = dash.Dash(__name__)
@@ -87,7 +87,7 @@ def update_output(n_clicks, department, x_values_inputs):
     
 import plotly.graph_objects as go
 
-# Callback para la gráfica 3D
+# Callback para 3D plot
 @app.callback(
     Output('3d-plot', 'figure'),
     Input('department-dropdown', 'value'))
@@ -131,6 +131,6 @@ def update_3d_plot(department):
 print("GOING LIVE")
 # Run the app
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server(host="0.0.0.0", debug=True)
 
 
