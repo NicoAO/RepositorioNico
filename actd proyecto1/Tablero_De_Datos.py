@@ -31,7 +31,8 @@ app.layout = html.Div([
     html.Div(id='x-values-input', style={'width': '50%', 'margin': 'auto'}),
     html.Button('Calcular', id='submit-val', n_clicks=0, style={'margin': '20px auto', 'display': 'block'}),
     html.Div(id='output-container-button', style={'textAlign': 'center', 'fontSize': '20px'}),
-
+    html.Div([
+        dcc.Graph(id='3d-plot')]),
     # Foto background watermark
     html.Div([
         html.Div(style={'position': 'absolute', 'top': '0', 'left': '0', 'width': '100%', 'height': '100%',
@@ -83,8 +84,52 @@ def update_output(n_clicks, department, x_values_inputs):
         model = sm.OLS(y_train, X_train).fit()
         predicted_y = model.predict([1] + x_values)
         return f"Productividad estimada: {predicted_y[0]}"
+    
+import plotly.graph_objects as go
+
+# Callback para 3D plot
+@app.callback(
+    Output('3d-plot', 'figure'),
+    Input('department-dropdown', 'value'))
+def update_3d_plot(department):
+    if department == 'sewing':
+        x_data = sewing_data['incentive']
+        y_data = sewing_data['targeted_productivity']
+    elif department == 'finishing':
+        x_data = finishing_data['smv']
+        y_data = finishing_data['over_time']
+
+    z_data = sewing_data['actual_productivity'] if department == 'sewing' else finishing_data['actual_productivity']
+    if department == 'sewing':
+        titulo_x = "Incentivo"
+        titulo_y = "Productividad Objetivo"
+    elif department == 'finishing':
+        titulo_x = 'smv'
+        titulo_y = 'over_time'
+
+    fig = go.Figure(data=[go.Scatter3d(
+        x=x_data,
+        y=y_data,
+        z=z_data,
+        mode='markers',
+        marker=dict(
+            size=12,
+            color=z_data,                
+            colorscale='Viridis',   
+            opacity=0.8
+        )
+    )])
+    fig.update_layout(scene=dict(
+        xaxis_title= titulo_x,
+        yaxis_title= titulo_y,
+        zaxis_title='Productividad actual'
+    ))
+    return fig
+
+
 print("GOING LIVE")
 # Run the app
 if __name__ == '__main__':
     app.run_server(debug=True)
+
 
