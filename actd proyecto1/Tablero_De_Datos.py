@@ -102,7 +102,7 @@ def update_3d_plot(department):
     z_data = sewing_data['actual_productivity'] if department == 'sewing' else finishing_data['actual_productivity']
     if department == 'sewing':
         titulo_x = "Incentivo"
-        titulo_y = "Productividad Objetivo"
+        titulo_y = "Prod. Objetivo"
     elif department == 'finishing':
         titulo_x = 'smv'
         titulo_y = 'over_time'
@@ -122,8 +122,9 @@ def update_3d_plot(department):
     fig.update_layout(scene=dict(
         xaxis_title= titulo_x,
         yaxis_title= titulo_y,
-        zaxis_title='Productividad actual'
-    ))
+        zaxis_title='Prod. actual'
+    ),
+    title = f"Gráfica productividad actual vs {titulo_x} y {titulo_y}")
     return fig
 
 
