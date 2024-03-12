@@ -87,7 +87,7 @@ def update_output(n_clicks, department, x_values_inputs):
     
 import plotly.graph_objects as go
 
-# Callback para 3D plot
+# Callback para la gráfica 3D
 @app.callback(
     Output('3d-plot', 'figure'),
     Input('department-dropdown', 'value'))
