@@ -4,8 +4,8 @@ import pandas as pd
 import statsmodels.api as sm
 
 #Bases de datos 
-sewing_data = pd.read_csv("datosproyecto1")
-finishing_data = pd.read_csv("finishing_datos")
+sewing_data = pd.read_csv("datosproyecto1.csv")
+finishing_data = pd.read_csv("finishing_datos.csv")
 
 #Crear la Dash app
 app = dash.Dash(__name__)
