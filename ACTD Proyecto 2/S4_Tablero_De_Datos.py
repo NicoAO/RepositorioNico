@@ -20,6 +20,15 @@ app.layout = html.Div([
     html.Div(id='x-values-input', style={'width': '50%', 'margin': 'auto'}),
     html.Button('Calcular', id='submit-val', n_clicks=0, style={'margin': '20px auto', 'display': 'block'}),
     html.Div(id='output-container-button', style={'textAlign': 'center', 'fontSize': '20px'}),
+    html.Div([
+            dcc.Graph(id='correlation-matrix'),
+        ], className='six columns'),
+        html.Div([
+            dcc.Graph(id='boxplot'),
+        ], className='six columns'),
+        html.Div([
+            dcc.Graph(id='line-chart'),
+        ], className='twelve columns'),
 
     # Foto background watermark
     html.Div([
