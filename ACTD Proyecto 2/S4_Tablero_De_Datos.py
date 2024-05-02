@@ -29,3 +29,9 @@ app.layout = html.Div([
         html.Div(style={'position': 'relative', 'z-index': '0'})  #Note to self: No cambiar el z-index para que se mantenga la imagen al fondo 
     ])
 ])
+
+
+print("GOING LIVE")
+# Run the app
+if __name__ == '__main__':
+    app.run_server(debug=True)
