@@ -39,6 +39,22 @@ app.layout = html.Div([
     ])
 ])
 
+# Callback para generar las entradas de valores X
+@app.callback(
+    Output('x-values-input', 'children'),
+    [Input('submit-val', 'n_clicks')]
+)
+def update_x_values_input(n_clicks):
+    # Lista de variables X que deseas incluir
+    x_vars = ["LIMIT_BAL", "SEX", "EDUCATION", "MARRIAGE", "AGE", "PAY_0", "PAY_1", "PAY_2", "PAY_3", "PAY_4", "PAY_5", "PAY_6",
+              "BILL_AMT1", "BILL_AMT2", "BILL_AMT3", "BILL_AMT4", "BILL_AMT5", "BILL_AMT6", "PAY_AMT1", "PAY_AMT2", "PAY_AMT3",
+              "PAY_AMT4", "PAY_AMT5", "PAY_AMT6",]
+
+    # Crear componentes de entrada para cada variable X
+    inputs = [dcc.Input(id=f"x-{var}", type='number', placeholder=var, style={'margin': '5px'}) for var in x_vars]
+    
+    return inputs
+
 
 print("GOING LIVE")
 # Run the app
