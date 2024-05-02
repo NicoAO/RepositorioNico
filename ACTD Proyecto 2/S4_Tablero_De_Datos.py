@@ -4,7 +4,7 @@ import pandas as pd
 import statsmodels.api as sm
 
 #Bases de datos 
-data = pd.read_csv("datosproyecto2")
+data = pd.read_csv("ACTD Proyecto 2/datosproyecto2")
 
 #Crear la Dash app
 app = dash.Dash(__name__)
@@ -26,7 +26,7 @@ app.layout = html.Div([
         html.Div(style={'position': 'absolute', 'top': '0', 'left': '0', 'width': '100%', 'height': '100%',
                         'background-image': 'url("https://www.elpais.com.co/resizer/W5OWOK0-li_y4FcdfLkYw0WEiG4=/1280x720/smart/filters:format(jpg):quality(80)/cloudfront-us-east-1.images.arcpublishing.com/semana/26W6AB74KVBZVKBUUHVHRPOPEE.jpg")',
                         'opacity': '0.4', 'z-index': '-1'}),
-        html.Div(style={'position': 'relative', 'z-index': '0'})  #Note to self: No cambiar el z-index para que se mantenga la imagen al fondo 
+        html.Div(style={'position': 'relative', 'z-index': '0'})   
     ])
 ])
 
