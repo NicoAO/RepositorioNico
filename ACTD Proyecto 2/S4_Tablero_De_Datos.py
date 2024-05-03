@@ -2,6 +2,8 @@ import dash
 from dash import html, dcc, Input, Output
 import pandas as pd
 import statsmodels.api as sm
+import tensorflow as tf
+import keras
 
 #Bases de datos 
 data = pd.read_csv("ACTD Proyecto 2/datosproyecto2")
