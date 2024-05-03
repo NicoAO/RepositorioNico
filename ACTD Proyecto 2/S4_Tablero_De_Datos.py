@@ -3,14 +3,11 @@ from dash import html, dcc, Input, Output
 import pandas as pd
 import statsmodels.api as sm
 import tensorflow as tf
-import keras
+import joblib
 from sklearn.preprocessing import MinMaxScaler
 
 #Caragar archivo de disco
-model = keras.models.load_model("ACTD Proyecto 2/modelo.joblib")
-
-# Normalizar las variables de entrada
-scaler = MinMaxScaler()
+model = joblib.load("ACTD Proyecto 2/modelo.joblib")
 
 #Crear la Dash app
 app = dash.Dash(__name__)
@@ -77,11 +74,8 @@ def update_output(n_clicks, x_values_inputs):
         if len(x_values) != len(x_vars):
             return "Por favor, ingrese todos los valores de entrada."
         
-        # Normalizar las variables de entrada
-        x_values_normalized = scaler.transform([x_values])[0]
-
         # Hacer la predicción con el modelo cargado
-        y_pred = model.predict([x_values_normalized])
+        y_pred = model.predict([x_values])
 
         return f"Default payment next month: {y_pred[0]}"
 
