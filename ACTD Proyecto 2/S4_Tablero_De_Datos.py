@@ -4,9 +4,13 @@ import pandas as pd
 import statsmodels.api as sm
 import tensorflow as tf
 import keras
+from sklearn.preprocessing import MinMaxScaler
 
-#Bases de datos 
-data = pd.read_csv("ACTD Proyecto 2/datosproyecto2")
+#Caragar archivo de disco
+model = keras.models.load_model("ACTD Proyecto 2/modelo.joblib")
+
+# Normalizar las variables de entrada
+scaler = MinMaxScaler()
 
 #Crear la Dash app
 app = dash.Dash(__name__)
@@ -57,6 +61,29 @@ def update_x_values_input(n_clicks):
     
     return inputs
 
+# Callback pero para la regresión
+@app.callback(
+    Output('output-container-button', 'children'),
+    Input('submit-val', 'n_clicks'),
+    Input('x-values-input', 'children'))
+
+def update_output(n_clicks, x_values_inputs):
+    if n_clicks > 0:
+        x_vars = ["LIMIT_BAL", "SEX", "EDUCATION", "MARRIAGE", "AGE", "PAY_0", "PAY_1", "PAY_2", "PAY_3", "PAY_4", "PAY_5", "PAY_6",
+              "BILL_AMT1", "BILL_AMT2", "BILL_AMT3", "BILL_AMT4", "BILL_AMT5", "BILL_AMT6", "PAY_AMT1", "PAY_AMT2", "PAY_AMT3",
+              "PAY_AMT4", "PAY_AMT5", "PAY_AMT6",]
+        x_values = [float(input_elem['props']['value']) for input_elem in x_values_inputs if input_elem['props']['id'].startswith('x-')]
+        
+        if len(x_values) != len(x_vars):
+            return "Por favor, ingrese todos los valores de entrada."
+        
+        # Normalizar las variables de entrada
+        x_values_normalized = scaler.transform([x_values])[0]
+
+        # Hacer la predicción con el modelo cargado
+        y_pred = model.predict([x_values_normalized])
+
+        return f"Default payment next month: {y_pred[0]}"
 
 print("GOING LIVE")
 # Run the app
