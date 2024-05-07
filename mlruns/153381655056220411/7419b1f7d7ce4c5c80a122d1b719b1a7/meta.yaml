@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/repositorios/Nrepository/RepositorioNico/mlruns/153381655056220411/7419b1f7d7ce4c5c80a122d1b719b1a7/artifacts
+end_time: 1715093342098
+entry_point_name: ''
+experiment_id: '153381655056220411'
+lifecycle_stage: active
+run_id: 7419b1f7d7ce4c5c80a122d1b719b1a7
+run_name: bustling-crow-394
+run_uuid: 7419b1f7d7ce4c5c80a122d1b719b1a7
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1715093330439
+status: 3
+tags: []
+user_id: Admin
