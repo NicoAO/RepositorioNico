@@ -4,11 +4,30 @@ import pandas as pd
 import joblib
 import plotly.graph_objects as go
 import plotly.express as px
+import tensorflow as tf
 
-data = pd.read_csv("ACTD Proyecto 2/datosproyecto2")
+
+
+
+import psycopg2
+engine = psycopg2.connect(
+    dbname="proyecto2",
+    user="postgres",
+    password="santafe1",
+    host="luis.c5yo08gi6fas.us-east-1.rds.amazonaws.com",
+    port='5432'
+)
+import pandas.io.sql as sqlio
+query = """
+SELECT * 
+FROM tablename;
+"""
+datos_graficas= sqlio.read_sql_query(query, engine)
+
+data = pd.read_csv("datosproyecto2")
 
 #Caragar archivo de disco
-model = joblib.load("ACTD Proyecto 2/modelo.joblib")
+model = tf.keras.models.load_model('modelo_entrenado.h5')
 
 #Crear la Dash app
 app = dash.Dash(__name__)
